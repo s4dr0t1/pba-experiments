@@ -1,0 +1,18 @@
+Type of segments
+                                                                                                 ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+                                                                                                 │ PT_LOAD   : Intended to be loaded into the memory when setting up the process                                │
+                                        Segment header structure            ┌───────────────────►│ PT_DYNAMIC: Contains .dynamic, which tells the interpreter how to parse and parepare the binary for execution│
+                                        ┌───────────────────────┐           │                    │ PT_INTERP : Species the name of the interpreter to load, for dynamic linking                                 │
+                                        │  typedef struct       │           │                    │ PT_PHDR   : Specifies that this segment contains the program header table                                    │
+                                        │  {                    │           │                    └──────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+                                        │    uint32_t p_type;   │ Type of the segment
+┌───────────────────────────┐   ┌───────┤    uint32_t p_flags;  │ Flags
+│PF_R: Segment is readable  │   │       │    uint64_t p_offset; │ File offset from where this segment starts
+│PF_W: Segment is writable  │◄──┘       │    uint64_t p_vaddr;  │ Virtual address to load this segment at
+│PF_X: Segment is executable│           │    uint64_t p_paddr;  │ Physical address to load this segment at (special cases) but generally 0 on modern OS'es
+└───────────────────────────┘           │    uint64_t p_filesz; │ Size of the segment header
+    Different segment flags             │    uint64_t p_memsz;  │ Segment size in memory. Can be > p_filesz (think of .bss)
+                                        │    uint64_t p_align;  │ Segment alignment: should be divisible by 8 and the likes
+                                        │  } Elf64_Phdr;        │
+                                        │                       │
+                                        └───────────────────────┘

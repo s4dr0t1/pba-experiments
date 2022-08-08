@@ -1,0 +1,25 @@
+Section         header                    
+                                                       ┌──────────────────────────┐
+                                                       │ typedef struct           │
+                                                       │ {                        │
+                                                       │   uint32_t  name;        │ Index into the string table which is used to tell the name of the section.(if non zero)
+                                 ┌─────────────────────┤   uint32_t  type;        │ Section type, indicated by an indicator.
+                                 │                     │   uint64_t  sh_flags;    │ Different type of flags for the section─────────────────────────────────────────────────┐
+     Different possible values   ▼ for section type    │   uint64_t  sh_addr;     │ Virtual address of the section (0 means this section isn't intended to be loaded)       │
+    ┌───────────────────────────────────────────┐      │   uint64_t  sh_offset;   │ Offset into the file from where this section starts                                     │
+    │                                           │      │   uint64_t  sh_size;     │ Size of the section                                                                     │
+    │ SHT_PROGBITS: The section contain program │      │   uint32_t  sh_link;     │ Defines relationship b/w different types of tables                                      │
+    │               data such as machine code or│      │   uint32_t  sh_info;     │ Additional information                                                                  │
+    │               constants.                  │      │   uint64_t  sh_addralign;│ Some sections needs to be placed in a certain order for efficiency, like multiple of 8  │
+    │                                           │      │   uint64_t  sh_entsize;  │ Size of each entry in special tables (such as relocation tables)                        │
+    │ SHT_SYMTAB  : Static symbol tables        │      │ } Elf64_Shdr;            │                                                                                         │
+    │ SHT_DYNTAB  : Symbol table used in        │      └──────────────────────────┘                                                                                         │
+    │               dynamic linking             │                                                                                                                           │
+    │ SHT_STRTAB  : String table                │                                                                                                                           │
+    │ SHT_RELA    : Relocation entries          │                                                                                               Different type of flags     │  These are the most commonly used
+    │               for the static linking      │                                                                            ┌──────────────────────────────────────────────▼──────────────────────────────────────────────────┐
+    │ SHT_DYNAMIC : Dynamic Relocation entries  │                                                                            │ SHF_WRITE:     Section is writable at runtime                                                   │
+    │ SHT_NOBITS  : Doesn't occupy any bits     │                                                                            │ SHF_EXECINSTR: Section contains executable instructions                                         │
+    └───────────────────────────────────────────┘                                                                            │ SHF_ALLOC:     Section is to be loaded into its virtual address space when executing the binary │
+                                                                                                                             └─────────────────────────────────────────────────────────────────────────────────────────────────┘ 
+  
